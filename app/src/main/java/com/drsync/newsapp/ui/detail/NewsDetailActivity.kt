@@ -1,6 +1,9 @@
 package com.drsync.newsapp.ui.detail
 
 import android.os.Bundle
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
 import com.drsync.newsapp.R
 import com.drsync.newsapp.data.local.entity.NewsEntity
 import com.drsync.newsapp.ui.ViewModelFactory
@@ -110,7 +114,20 @@ fun NewsDetailContent(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-
+            AndroidView(
+                factory = {
+                    WebView(it).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        webViewClient = WebViewClient()
+                    }
+                },
+                update = {
+                    it.loadUrl(url)
+                }
+            )
         }
     }
 }
